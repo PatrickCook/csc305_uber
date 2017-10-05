@@ -25,7 +25,7 @@ public final class RideManager {
 	}
 	
 	public static Driver getClosestDriver(Passenger passenger) {
-		Driver closestDriver;
+		Driver closestDriver = null;
 		double minDist = Double.MAX_VALUE;
 		
 		for (Iterator i = drivers.iterator(); i.hasNext(); ) {
