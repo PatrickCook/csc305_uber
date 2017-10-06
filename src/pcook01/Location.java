@@ -23,4 +23,8 @@ public class Location {
 	public void setyCord(int yCord) {
 		this.yCord = yCord;
 	}
+	
+	public String toString() {
+		return "xCord: " + xCord + " yCord: " + yCord;
+	}
 }

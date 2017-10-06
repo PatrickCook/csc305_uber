@@ -11,23 +11,11 @@ public abstract class User {
 	private ArrayList<Rating> ratings;
 	
 	public void addRating(Rating rating) {
-		
+		ratings.add(rating);
 	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	
+	public void addPreviousRide(Ride ride) {
+		prevRides.add(ride);
 	}
 
 	public double getBalance() {
@@ -36,6 +24,14 @@ public abstract class User {
 
 	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+	
+	public void addBalance(double balance) {
+		this.balance += balance;
+	}
+
+	public void removeBalance(double balance) {
+		this.balance -= balance;
 	}
 
 	public Location getLocation() {
@@ -46,4 +42,7 @@ public abstract class User {
 		this.location = currentLocation;
 	}
 	
+	public String toString() {
+		return firstName + " " + lastName;
+	}
 } 

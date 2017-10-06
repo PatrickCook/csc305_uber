@@ -5,7 +5,6 @@ import java.util.Date;
 public class Ride {
 	private Location pickup;
 	private Location dropoff;
-	private double cost;
 	private double distance;
 	private Date departureTime;
 	private Date arrivalTime;
@@ -19,5 +18,17 @@ public class Ride {
 		this.passenger = passenger;
 		this.distance = UberMap.getDistance(passenger.getLocation(), dropoff);
 		this.departureTime = new Date();
+	}
+
+	public double getCost() {
+		return PaymentSystem.RIDE_RATE * distance;
+	}
+
+	public Driver getDriver() {
+		return driver;
+	}
+
+	public Passenger getPassenger() {
+		return passenger;
 	}
 }

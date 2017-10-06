@@ -7,7 +7,6 @@ public final class RideManager {
 	private static ArrayList<Driver> drivers;
 	private static ArrayList<Ride> rides;
 
-	
 	public static Ride requestRide(Passenger passenger, Location dropoff) {
 		Driver driver;
 		
@@ -17,16 +16,19 @@ public final class RideManager {
 		}
 		
 		if ((driver = getClosestDriver(passenger)) == null) {
-			System.out.println("Failed to request ride. No drivers exist");
+			System.out.println("Failed to request ride. No drivers available");
 			return null;
 		}
+		System.out.println("RideManager: requested ride to " 
+				+ dropoff.toString());
 		
 		return new Ride(driver, passenger, dropoff);
 	}
 	
 	public static Driver getClosestDriver(Passenger passenger) {
-		Driver closestDriver = null;
+		ArrayList<Driver> drivers = new ArrayList<>();
 		double minDist = Double.MAX_VALUE;
+		
 		
 		for (Iterator i = drivers.iterator(); i.hasNext(); ) {
 			Driver driver = (Driver)i.next();
