@@ -34,6 +34,7 @@ public class RideManager implements Runnable {
 						ride.getPassenger().toString(), ride.getDestination().toString());
 				timer.cancel();
 				collectRatings();
+				System.out.println(ride.toString());
 			}
 
 		}, 4000);

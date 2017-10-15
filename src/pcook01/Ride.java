@@ -40,5 +40,10 @@ public class Ride {
 	public Location getPickup() {
 		return pickup;
 	}
+	
+	public String toString() {
+		return String.format("Ride Details: \n\tDriver: %s \n\tPassenger: %s\n\tCost: $%.2f \n\tDistance: %.2f\n\t",
+				this.driver.toString(), this.passenger.toString(), getCost(), this.distance);
+	}
 }
 

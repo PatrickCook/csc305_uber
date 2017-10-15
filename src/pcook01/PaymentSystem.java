@@ -10,6 +10,6 @@ public class PaymentSystem {
 		sender.removeBalance(transaction.getAmount());
 		recipient.addBalance(transaction.getAmount());
 		
-		System.out.printf("%s paid %s %.2f\n", sender.toString(), recipient.toString(), transaction.getAmount());
+		System.out.printf("%s paid %s $%.2f.\n", sender.toString(), recipient.toString(), transaction.getAmount());
 	}
 }
