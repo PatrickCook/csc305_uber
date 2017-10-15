@@ -11,6 +11,14 @@ public abstract class User {
 	private int sumRatings = 0;
 	private int numRatings = 0;
 	
+	public User (String firstName, String lastName, double balance, Location location) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.balance = balance;
+		this.location = location;
+	}
+	
+	
 	public abstract boolean confirmRide(Ride ride);
 	
 	public void addRating(int rating) {

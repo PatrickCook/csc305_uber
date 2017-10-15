@@ -25,6 +25,6 @@ public class Location {
 	}
 	
 	public String toString() {
-		return "xCord: " + xCord + " yCord: " + yCord;
+		return "(" + xCord + ", " + yCord + ")";
 	}
 }

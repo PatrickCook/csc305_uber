@@ -3,12 +3,13 @@ package pcook01;
 public class UberApp {
 
 	public static void main(String[] args) {
-		String filename;
+		Passenger patrick = new Passenger("Patrick", "Cook", 200.00, new Location(0,0));
+		Driver driver = new Driver("Uber", "Driver", 100.00, new Location(10,10));
 		
-//		if (args.length == 2) {
-//			filename = args[1];
-//		}
+		Uber.addUberDriver(driver);
+		Uber.addUberDriver(driver);
 		
+		patrick.requestRide(new Location(30,30));
 		
 
 	}

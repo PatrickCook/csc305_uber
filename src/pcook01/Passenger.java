@@ -4,24 +4,32 @@ import java.util.Scanner;
 
 public class Passenger extends User{
 	
+	public Passenger(String firstName, String lastName, double balance,
+			Location location) {
+		super(firstName, lastName, balance, location);
+	}
+
 	public void requestRide(Location destination) {
-		RideManager.requestRide(this, destination);
+		Uber.requestRide(this, destination);
 	}
 	
 	public boolean confirmRide(Ride ride) {
 		char response;
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.printf("A ride has been found! The ride will cost %d. Would"
-				+ " you like to confirm (y/n)?", ride.getCost());
+		System.out.printf("%s (Rating %.2f): A ride has been found! The ride will cost $%.2f. Would you like to confirm (y/n)?", 
+				this.toString(), this.getRating(), ride.getCost());
 		
 		response = sc.next(".").charAt(0);
-		sc.close();
+
 		//Make sure user actually pressed y
 		if (response == 'y') {
 			System.out.println("User confirmed ride.");
 			return true;
+		} else if (response == 'n') {
+			System.out.println("User declined ride");
 		}
+		
 		
 		return false;
 	}
