@@ -20,6 +20,7 @@ public abstract class User {
 	
 	
 	public abstract boolean confirmRide(Ride ride);
+	public abstract int collectRating();
 	
 	public void addRating(int rating) {
 		numRatings++;

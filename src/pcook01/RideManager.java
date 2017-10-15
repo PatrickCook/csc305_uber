@@ -1,5 +1,6 @@
 package pcook01;
 
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,7 +21,7 @@ public class RideManager implements Runnable {
 		timer.schedule(new TimerTask() {
 
 			public void run() {
-				System.out.printf("%s has picked up %s at %s", ride.getDriver().toString(), 
+				System.out.printf("%s has picked up %s at %s\n", ride.getDriver().toString(), 
 						ride.getPassenger().toString(), ride.getPickup().toString());
 			}
 
@@ -29,17 +30,35 @@ public class RideManager implements Runnable {
 		timer.schedule(new TimerTask() {
 
 			public void run() {
-				System.out.printf("%s has dropped off %s at %s", ride.getDriver().toString(), 
+				System.out.printf("%s has dropped off %s at %s\n", ride.getDriver().toString(), 
 						ride.getPassenger().toString(), ride.getDestination().toString());
 				timer.cancel();
+				collectRatings();
 			}
 
 		}, 4000);
-		
-		collectRatings();
 	}
 	
 	public void collectRatings() {
+		int driverRating, passengerRating;
+		Driver driver = ride.getDriver();
+		Passenger passenger  = ride.getPassenger();
 		
+		passengerRating = driver.collectRating();
+		driverRating = passenger.collectRating();
+		
+		if (passengerRating != -1) {
+			passenger.addRating(passengerRating);
+		}
+		
+		if (driverRating != -1) {
+			driver.addRating(driverRating);
+		}
+		
+		System.out.printf("%s: Rating - %.2f, Balance - %.2f\n", 
+				driver.toString(), driver.getRating(), driver.getBalance());
+		
+		System.out.printf("%s: Rating - %.2f, Balance - %.2f\n", 
+				passenger.toString(), passenger.getRating(), passenger.getBalance());
 	}
 }

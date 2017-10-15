@@ -40,4 +40,20 @@ public class Driver extends User {
 		
 		return false;
 	}
+	public int collectRating() {
+		int rating;
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.print("Rate your passenger [0-5] or -1 to skip: ");
+		
+		while (true) {
+			rating = sc.nextInt();
+			if (0 <= rating && rating <= 5) {
+				return rating;
+			} else if (rating == -1) {
+				return -1;
+			}
+			System.out.println("Please enter number between [0-5]: ");
+		}
+	}
 }
