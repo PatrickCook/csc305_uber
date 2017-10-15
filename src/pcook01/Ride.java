@@ -12,11 +12,12 @@ public class Ride {
 	private Passenger passenger;
 	
 	public Ride(Driver driver, Passenger passenger, Location dropoff) {
-		this.pickup = pickup;
+		this.pickup = passenger.getLocation();
 		this.dropoff = dropoff;
 		this.driver = driver;
 		this.passenger = passenger;
-		this.distance = UberMap.getDistance(passenger.getLocation(), dropoff);
+		this.distance = UberMap.getDistance(driver.getLocation(), passenger.getLocation()) +
+				UberMap.getDistance(passenger.getLocation(), dropoff);
 		this.departureTime = new Date();
 	}
 
@@ -31,4 +32,13 @@ public class Ride {
 	public Passenger getPassenger() {
 		return passenger;
 	}
+	
+	public Location getDestination() {
+		return dropoff;
+	}
+	
+	public Location getPickup() {
+		return pickup;
+	}
 }
+

@@ -8,10 +8,22 @@ public abstract class User {
 	private double balance;
 	private Location location;
 	private ArrayList<Ride> prevRides;
-	private ArrayList<Rating> ratings;
+	private int sumRatings = 0;
+	private int numRatings = 0;
 	
-	public void addRating(Rating rating) {
-		ratings.add(rating);
+	public abstract boolean confirmRide(Ride ride);
+	
+	public void addRating(int rating) {
+		numRatings++;
+		sumRatings += rating;
+	}
+	
+	public double getRating() {
+		if (numRatings == 0) {
+			return 0.0;
+		}
+		
+		return sumRatings / numRatings;
 	}
 	
 	public void addPreviousRide(Ride ride) {
