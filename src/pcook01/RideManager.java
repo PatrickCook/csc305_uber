@@ -21,11 +21,20 @@ public class RideManager implements Runnable {
 		timer.schedule(new TimerTask() {
 
 			public void run() {
+				System.out.printf("%s is on his way! Estimated wait time is %d minutes.\n", 
+						ride.getDriver().toString(), ride.getEstimatedWaitTime());
+			}
+
+		}, 2000);
+		
+		timer.schedule(new TimerTask() {
+
+			public void run() {
 				System.out.printf("%s has picked up %s at %s\n", ride.getDriver().toString(), 
 						ride.getPassenger().toString(), ride.getPickup().toString());
 			}
 
-		}, 2000);
+		}, 3000);
 		
 		timer.schedule(new TimerTask() {
 

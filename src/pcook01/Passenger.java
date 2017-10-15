@@ -39,16 +39,16 @@ public class Passenger extends User{
 		int rating;
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.print("Rate your Uber driver [0-5] or -1 to cancel: ");
+		System.out.print("Rate your Uber driver [1-5] or -1 to cancel: ");
 		
 		while (true) {
 			rating = sc.nextInt();
-			if (0 <= rating && rating <= 5) {
+			if (1 <= rating && rating <= 5) {
 				return rating;
 			} else if (rating == -1) {
 				return -1;
 			}
-			System.out.println("Please enter number between [0-5]: ");
+			System.out.println("Please enter number between [1-5]: ");
 		}
 	}
 }

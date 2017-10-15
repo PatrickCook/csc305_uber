@@ -9,7 +9,7 @@ public class UberApp {
 		Uber.addUberDriver(driver);
 		Uber.addUberDriver(driver);
 		
-		patrick.requestRide(new Location(30,30));
+		patrick.requestRide(new Location(5,5));
 		
 
 	}
