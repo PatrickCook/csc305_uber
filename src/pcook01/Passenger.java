@@ -4,9 +4,12 @@ import java.util.Scanner;
 
 public class Passenger extends User{
 	
+	private Scanner sc;
+
 	public Passenger(String firstName, String lastName, double balance,
 			Location location) {
 		super(firstName, lastName, balance, location);
+		sc = new Scanner(System.in);
 	}
 
 	public void requestRide(Location destination) {
@@ -15,29 +18,26 @@ public class Passenger extends User{
 	
 	public boolean confirmRide(Ride ride) {
 		char response;
-		Scanner sc = new Scanner(System.in);
+		sc = new Scanner(System.in);
 		
-		System.out.printf("%s (Rating %.2f): A ride has been found! The ride will cost $%.2f. Would you like to confirm (y/n)?", 
-				this.toString(), this.getRating(), ride.getCost());
+		System.out.print("USER: A ride has been found! Would you like to confirm (y/n)? ");
 		
-		response = sc.next(".").charAt(0);
+		while (true) {
+			response = sc.next(".").charAt(0);
 
-		//Make sure user actually pressed y
-		if (response == 'y') {
-			System.out.println("User confirmed ride.");
-			return true;
-		} else if (response == 'n') {
-			System.out.println("User declined ride");
+			//Make sure user actually pressed y
+			if (response == 'y') {
+				return true;
+			} else if (response == 'n') {
+				return false;
+			}
+			System.out.println("Please enter y/n...");
 		}
-		
-		
-		return false;
 	}
 
 	@Override
 	public int collectRating() {
 		int rating;
-		Scanner sc = new Scanner(System.in);
 		
 		System.out.print("Rate your Uber driver [1-5] or -1 to cancel: ");
 		

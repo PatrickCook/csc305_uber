@@ -8,6 +8,9 @@ public class Location {
 		this.yCord = yCord;
 	}
 
+	public boolean equals(Location other) {
+		return this.xCord == other.xCord && this.yCord == other.yCord;
+	}
 	public int getxCord() {
 		return xCord;
 	}

@@ -25,20 +25,20 @@ public class Driver extends User {
 		char response;
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.printf("%s (Rating %.2f): A user has requested a ride to %s. Would you like to accept (y/n)?", 
-				this.toString(), this.getRating(), ride.getDestination().toString());
+		System.out.printf("DRIVER: A user has requested a ride to %s. Would you like to accept (y/n)? ", 
+				ride.getDestination().toString());
 		
-		response = sc.next(".").charAt(0);
+		while (true) {
+			response = sc.next(".").charAt(0);
 
-		//Make sure user actually pressed y
-		if (response == 'y') {
-			System.out.println("Driver has accepted the ride.");
-			return true;
-		}  else if (response == 'n') {
-			System.out.println("Driver declined ride");
+			//Make sure user actually pressed y
+			if (response == 'y') {
+				return true;
+			} else if (response == 'n') {
+				return false;
+			}
+			System.out.println("Please enter y/n...");
 		}
-		
-		return false;
 	}
 	public int collectRating() {
 		int rating;

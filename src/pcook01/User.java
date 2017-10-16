@@ -66,4 +66,8 @@ public abstract class User {
 	public String toString() {
 		return firstName + " " + lastName;
 	}
+	
+	public String toStringWB() {
+		return firstName + " " + lastName + ": Rating " + balance;
+	}
 } 
