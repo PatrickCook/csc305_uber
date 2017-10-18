@@ -8,17 +8,18 @@ import java.util.PriorityQueue;
 public final class Uber {
 	private static int completed = 0;
 	private static int canceled = 0;
-	private static ArrayList<Transaction> transactions = new ArrayList<>();
 	private static ArrayList<Passenger> users = new ArrayList<>();
 	private static ArrayList<Driver> drivers = new ArrayList<>();
 	private static ArrayList<Ride> rides = new ArrayList<>();
+	static final int TIME_PER_UNIT_DIST_MS = 50;	 /* 10 ms per unit of distance */
 
 	public static void requestRide(Passenger passenger, Location dropoff) {
 		Ride newRide;
 		Driver driver;
-		Transaction transaction;
+		RideManager rideManager;
 		PriorityQueue<Ride> available;
 		
+		System.out.println("-------------- New Uber ride has been requested ------------");
 		/* Check if dropoff location is supported by map */
 		if (!UberMap.containsLocation(dropoff)) {
 			System.out.println("RideManager: Location is not supported by Uber");
@@ -41,16 +42,17 @@ public final class Uber {
 			newRide = new Ride(driver, passenger, dropoff);
 
 			if (rideConfirmation(newRide, driver, passenger)) {
-				transaction = new Transaction(passenger, driver, newRide.getCost());
-				transactions.add(transaction);
 				
-				PaymentSystem.processTransaction(transaction);
 				/* Ride has begun */
 				System.out.println("RideManager: Pickup location has been confirmed");
 				/* Threading for each setup ride */
 				rides.add(newRide);
-				(new Thread(new RideManager(newRide))).start();
+				rideManager = new RideManager(newRide);
+				rideManager.startRide();
+
 				completed++;
+				
+				System.out.println("--------------- Uber ride request completed -------------\n");
 				return;
 			} else {
 				/* Remove driver if he declines ride */
@@ -63,8 +65,8 @@ public final class Uber {
 	}
 
 	public static boolean rideConfirmation(Ride newRide, Driver driver, Passenger passenger) {
-		if (driver.confirmRide(newRide)) {
-			if (passenger.confirmRide(newRide)) {
+		if (driver.randomConfirmRide(newRide)) {
+			if (passenger.randomConfirmRide(newRide)) {
 				System.out.println("The user and driver have confirmed");
 
 				if (passenger.getBalance() > newRide.getCost()) {
@@ -100,7 +102,7 @@ public final class Uber {
 
 		PriorityQueue<Ride> pqueue = new PriorityQueue<Ride>(comparator);
 
-		for (Iterator i = drivers.iterator(); i.hasNext(); ) {
+		for (Iterator<Driver> i = drivers.iterator(); i.hasNext(); ) {
 			Driver driver = (Driver)i.next();
 			if (driver.isAvailable()) {
 				ride = new Ride(driver, passenger, dropoff);
@@ -118,7 +120,7 @@ public final class Uber {
 		System.out.printf("%d completed, %d canceled\n", completed, canceled);
 		
 		for (Passenger p : users) {
-			UberMap.setLocation(p.getLocation(), 1);
+			
 			System.out.println(p.toStringWB());
 		}
 		for (Driver d : drivers) {

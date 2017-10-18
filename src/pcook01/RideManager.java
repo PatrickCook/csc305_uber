@@ -4,35 +4,28 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 
 import org.json.simple.JSONObject;
 
-public class RideManager implements Runnable {
+public class RideManager {
 	private Ride ride;
 
 	public RideManager(Ride ride) {
 		this.ride = ride;
 	}
 
-	@Override
-	public void run() {
-		startRide();
-	}
 
 	public void startRide() {
+		Timer timer = new Timer();
 		Driver driver = ride.getDriver();
 		Passenger user = ride.getPassenger();
-		Timer timer = new Timer();
+		CountDownLatch latch = new CountDownLatch(2);
+		Transaction transaction = new Transaction(user, driver, ride.getCost());
 		
 		/* Let user know driver is on his way */
-		timer.schedule(new TimerTask() {
-
-			public void run() {
-				System.out.printf("RideManager: %s is on his way. Estimated wait time is %d minutes.\n",
-						driver.toString(), ride.getEstimatedWaitTime());
-			}
-
-		}, 2000);
+		System.out.printf("RideManager: %s is on his way. Estimated wait time is %d ms.\n",
+				driver.toString(), ride.getEstimatedWaitTime());
 
 		/* Alert user that driver has arrived */
 		timer.schedule(new TimerTask() {
@@ -40,9 +33,10 @@ public class RideManager implements Runnable {
 			public void run() {
 				System.out.printf("RideManager: %s has arrived\n", 
 						driver.toString());
+				latch.countDown();
 			}
 
-		}, 3000);
+		}, ride.getEstimatedWaitTime());
 
 		/* Alert user that they have been dropped off */
 		timer.schedule(new TimerTask() {
@@ -50,19 +44,34 @@ public class RideManager implements Runnable {
 			public void run() {
 				System.out.printf("RideManager: %s has dropped off %s\n", driver.toString(),
 						user.toString());
-
+				
+				PaymentSystem.processTransaction(transaction);
 				collectRatings();
 				logRide();
 				
 				/* Update driver and user information */
+				UberMap.unsetLocation(user.getLocation());
+				UberMap.unsetLocation(driver.getLocation());
+				
 				driver.setAvailable(true);
 				driver.setLocation(ride.getDestination());
 				user.setLocation(ride.getDestination());
 				
-				timer.cancel();
+				UberMap.setLocation(user.getLocation(), 1);
+				UberMap.setLocation(driver.getLocation(), 2);
+				
+				latch.countDown();
 			}
 
-		}, 4000);
+		}, ride.getEstimatedWaitTime() + ride.getEstimatedRideTime());
+		
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			
+		}
+		timer.cancel();
+		
 	}
 
 	public void collectRatings() {
@@ -120,7 +129,5 @@ public class RideManager implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println(log.toString());
 	}
 }

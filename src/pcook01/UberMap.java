@@ -11,7 +11,7 @@ public class UberMap {
 	public static double getDistance(Location pickup, Location dropoff) {
 		int dx, dy;
 		
-		if (!containsLocation(pickup) && !containsLocation(dropoff)) {
+		if (!containsLocation(pickup) || !containsLocation(dropoff)) {
 			return -1;
 		}
 		
@@ -27,6 +27,10 @@ public class UberMap {
 				loc.getxCord() >= 0 && loc.getxCord() < MAPSIZE_X &&
 				loc.getyCord() >= 0 && loc.getyCord() < MAPSIZE_Y
 			   );
+	}
+	
+	public static void unsetLocation(Location loc) {
+		setLocation(loc, 0);
 	}
 	
 	public static void setLocation(Location loc, int with) {

@@ -1,4 +1,2 @@
-{"cost":14.849242404917497,"driver":{"balance":111.879393923934,"name":"Uber Driver"},"location":{"start":"(0, 0)","end":"(5, 5)"},"user":{"balance":185.1507575950825,"name":"Patrick Cook"}}
-{"cost":14.849242404917497,"driver":{"balance":111.879393923934,"name":"Uber Driver"},"location":{"start":"(0, 0)","end":"(5, 5)"},"user":{"balance":185.1507575950825,"name":"Patrick Cook"}}
-{"cost":14.849242404917497,"driver":{"balance":111.879393923934,"name":"Uber Driver"},"location":{"start":"(0, 0)","end":"(5, 5)"},"user":{"balance":185.1507575950825,"name":"Patrick Cook"}}
-{"cost":14.849242404917497,"driver":{"balance":111.879393923934,"name":"Uber Driver"},"location":{"start":"(0, 0)","end":"(5, 5)"},"user":{"balance":185.1507575950825,"name":"Patrick Cook"}}
+{"cost":40.65595790827809,"driver":{"balance":32.524766326622476,"name":"Uber Rob"},"location":{"start":"(0, 0)","end":"(94, 63)"},"user":{"balance":59.34404209172191,"name":"Patrick Cook"}}
+{"cost":9.995963192603655,"driver":{"balance":7.996770554082925,"name":"Driver Eric"},"location":{"start":"(15, 20)","end":"(7, 45)"},"user":{"balance":190.00403680739635,"name":"Casey Cook"}}

@@ -3,13 +3,14 @@ package pcook01;
 import java.util.Scanner;
 
 public class Driver extends User {
+	private Scanner sc;
 	private String carTitle;
 	private boolean available;
-	
+
 	public Driver(String firstName, String lastName, double balance,
 			Location location) {
 		super(firstName, lastName, balance, location);
-		
+		this.sc = new Scanner(System.in);
 		this.available = true;
 	}
 	
@@ -21,9 +22,8 @@ public class Driver extends User {
 		return available;
 	}
 	
-	public boolean confirmRide(Ride ride) {
+	public boolean userConfirmRide(Ride ride) {
 		char response;
-		Scanner sc = new Scanner(System.in);
 		
 		System.out.printf("DRIVER: A user has requested a ride to %s. Would you like to accept (y/n)? ", 
 				ride.getDestination().toString());
@@ -40,9 +40,9 @@ public class Driver extends User {
 			System.out.println("Please enter y/n...");
 		}
 	}
-	public int collectRating() {
+	
+	public int userCollectRating() {
 		int rating;
-		Scanner sc = new Scanner(System.in);
 		
 		System.out.print("Rate your passenger [1-5] or -1 to skip: ");
 		

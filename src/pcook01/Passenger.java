@@ -16,7 +16,7 @@ public class Passenger extends User{
 		Uber.requestRide(this, destination);
 	}
 	
-	public boolean confirmRide(Ride ride) {
+	public boolean userConfirmRide(Ride ride) {
 		char response;
 		sc = new Scanner(System.in);
 		
@@ -35,8 +35,7 @@ public class Passenger extends User{
 		}
 	}
 
-	@Override
-	public int collectRating() {
+	public int userCollectRating() {
 		int rating;
 		
 		System.out.print("Rate your Uber driver [1-5] or -1 to cancel: ");
