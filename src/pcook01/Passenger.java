@@ -3,19 +3,26 @@ package pcook01;
 import java.util.Scanner;
 
 public class Passenger extends User{
-	
 	private Scanner sc;
 
+	/**
+	 * Default Constructor
+	 * @param firstName First name
+	 * @param lastName Last name
+	 * @param balance Initial balance
+	 * @param location Initial location
+	 */
 	public Passenger(String firstName, String lastName, double balance,
 			Location location) {
 		super(firstName, lastName, balance, location);
 		sc = new Scanner(System.in);
 	}
-
-	public void requestRide(Location destination) {
-		Uber.requestRide(this, destination);
-	}
 	
+	/**
+	 * User input version of confirming a ride
+	 * @param ride Ride to confirm
+	 * @return True if the user accepts ride
+	 */
 	public boolean userConfirmRide(Ride ride) {
 		char response;
 		sc = new Scanner(System.in);
@@ -35,6 +42,10 @@ public class Passenger extends User{
 		}
 	}
 
+	/**
+	 * User version of collect a rating
+	 * @return Rating collected from user
+	 */
 	public int userCollectRating() {
 		int rating;
 		

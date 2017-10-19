@@ -5,21 +5,34 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-public final class Uber {
+/**
+ * Central class for Uber Application
+ * Responsible for handling ride requests, finding drivers
+ * and outputting Uber logs to a file
+ * @author Patrick Cook
+ *
+ */
+public class Uber {
 	private static int completed = 0;
 	private static int canceled = 0;
 	private static ArrayList<Passenger> users = new ArrayList<>();
 	private static ArrayList<Driver> drivers = new ArrayList<>();
 	private static ArrayList<Ride> rides = new ArrayList<>();
-	static final int TIME_PER_UNIT_DIST_MS = 50;	 /* 10 ms per unit of distance */
+	static final int TIME_PER_UNIT_DIST_MS = 25;	 /* ms per unit of distance */
 
+	/**
+	 * Allows a user to request a ride. Driver is found and the ride is started
+	 * @param passenger - user requesting ride
+	 * @param dropoff - dropoff location for ride
+	 */
 	public static void requestRide(Passenger passenger, Location dropoff) {
 		Ride newRide;
 		Driver driver;
 		RideManager rideManager;
 		PriorityQueue<Ride> available;
 		
-		System.out.println("-------------- New Uber ride has been requested ------------");
+		System.out.println("----------- New Uber ride has been requested ---------");
+		
 		/* Check if dropoff location is supported by map */
 		if (!UberMap.containsLocation(dropoff)) {
 			System.out.println("RideManager: Location is not supported by Uber");
@@ -38,13 +51,18 @@ public final class Uber {
 		 * Step through queue until driver is chosen
 		 */
 		while (!available.isEmpty()) {
-			driver = available.peek().getDriver();
+			driver = available.poll().getDriver();
 			newRide = new Ride(driver, passenger, dropoff);
-
+			
+			/* Check if they can pay for ride */
+			if (passenger.getBalance() < newRide.getCost()) {
+				System.out.println("Insufficient funds to request ride.");
+				break;
+			}
+			
 			if (rideConfirmation(newRide, driver, passenger)) {
-				
-				/* Ride has begun */
 				System.out.println("RideManager: Pickup location has been confirmed");
+				
 				/* Threading for each setup ride */
 				rides.add(newRide);
 				rideManager = new RideManager(newRide);
@@ -52,44 +70,56 @@ public final class Uber {
 
 				completed++;
 				
-				System.out.println("--------------- Uber ride request completed -------------\n");
+				System.out.println("------------------------------------------------------\n");
 				return;
-			} else {
-				/* Remove driver if he declines ride */
-				available.remove(driver);
 			}
 		}
 		canceled++;
-		System.out.println("RideManager: User/driver failed to confirm ride. "
-				+ "Ride request canceled.");
+		
+		System.out.println("RideManager: Ride request canceled.");
+		System.out.println("------------------------------------------------------\n");
 	}
 
+	/**
+	 * Determines whether the driver and passenger agree to the ride
+	 * @param newRide - holds all ride information
+	 * @param driver - current selected driver
+	 * @param passenger - user requesting a ride
+	 * @return Returns true if both parties confirm
+	 */
 	public static boolean rideConfirmation(Ride newRide, Driver driver, Passenger passenger) {
 		if (driver.randomConfirmRide(newRide)) {
 			if (passenger.randomConfirmRide(newRide)) {
 				System.out.println("The user and driver have confirmed");
-
-				if (passenger.getBalance() > newRide.getCost()) {
-					driver.setAvailable(false);
-					return true;
-				} else {
-					System.out.println("RideManager: Insufficient funds to request ride.");
-				}
+				driver.setAvailable(false);
+				
+				return true;
 			}
 		}
 		return false;
 	}
 
+	/**
+	 * Algorithm for building a queue of drivers. Drivers who are closest to
+	 * the passenger are given priority. If there is a tie the driver with 
+	 * the highest rating receives priority
+	 * @param passenger - user requesting the ride
+	 * @param dropoff - dropoff location for the ride
+	 * @return Returns a PriorityQueue of drivers to pick from 
+	 */
 	public static PriorityQueue<Ride> getClosestDrivers(Passenger passenger, Location dropoff) {
 		Ride ride;
 		
+		/* Create a comparator to compare drivers */
 		Comparator<Ride> comparator = new Comparator<Ride>() {
 	        @Override
 	        public int compare(Ride a, Ride b) {
+	        	/* Chose closest driver */
 	        	if (a.getDriverDistance() < b.getDriverDistance()) {
 	        		return -1;
 	        	} else if (a.getDriverDistance() > b.getDriverDistance()) {
 	        		return 1;
+	        	/* If there is a tie, use ratings to choose */	
 	        	} else {
 	        		if (a.getDriver().getRating() < b.getDriver().getRating())
 		                return -1;
@@ -101,7 +131,8 @@ public final class Uber {
 	    };
 
 		PriorityQueue<Ride> pqueue = new PriorityQueue<Ride>(comparator);
-
+		
+		/* For each driver create a potential ride for use to choose from later */
 		for (Iterator<Driver> i = drivers.iterator(); i.hasNext(); ) {
 			Driver driver = (Driver)i.next();
 			if (driver.isAvailable()) {
@@ -113,51 +144,55 @@ public final class Uber {
 		return pqueue;
 	}
 	
+	/**
+	 * Used to output all trip history for the current run
+	 */
 	public static void outputUberHistory() {
-		int spot;
-		int sizeX = UberMap.MAPSIZE_X, sizeY = UberMap.MAPSIZE_Y;
 		
-		System.out.printf("%d completed, %d canceled\n", completed, canceled);
+		System.out.println("--------------- Uber Information ---------------");
+		System.out.printf("%d completed, %d canceled, %d transactions\n", 
+				completed, canceled, completed);
 		
+		/* Output passenger information */
 		for (Passenger p : users) {
-			
-			System.out.println(p.toStringWB());
+			System.out.println(p.toStringFull());
 		}
+		
+		/* Output driver information */
 		for (Driver d : drivers) {
-			UberMap.setLocation(d.getLocation(), 2);
-			System.out.println(d.toStringWB());
-		}
-		
-		System.out.println("D - driver, P - passenger");
-		
-		for (int row = 0; row < sizeX; row++) {
-			for (int col = 0; col < sizeY; col++) {
-				spot = UberMap.getLocation(new Location(row, col));
-				if (spot == 0) {
-					System.out.print("- ");
-				} else if (spot == 1) {
-					System.out.print("U ");
-				} else if (spot == 2) {
-					System.out.print("D ");
-				}
-			}
-			System.out.println();
+			System.out.println(d.toStringFull());
 		}
 	}
 	
-	/* Setters and Getters */
+	/**
+	 * Add an uber driver to Uber
+	 * @param driver - New driver to choose from
+	 */
 	public static void addUberDriver(Driver driver) {
 		drivers.add(driver);
 	}
 	
+	/**
+	 * Add a new uber user
+	 * @param passenger - New uber users (passenger)
+	 */
 	public static void addUberUser(Passenger passenger) {
 		users.add(passenger);
 	}
 	
+	/**
+	 * Remove driver from list of Uber drivers
+	 * @param driver - Driver to remove
+	 */
 	public static void removeUberDriver(Driver driver) {
+
 		drivers.remove(driver);
 	}
 	
+	/**
+	 * Remove user from list of uber passengers
+	 * @param passenger - Passenger to remove
+	 */
 	public static void removeUberUser(Passenger passenger) {
 		users.remove(passenger);
 	}

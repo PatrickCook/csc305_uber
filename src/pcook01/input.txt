@@ -1,5 +1,9 @@
-P Patrick Cook 100 0 0
-P Casey Cook 200 15 20
+P Patrick Cook 10 0 0
+P Casey Cook 50 15 20
+P Taylor Gater 30 20 20
+P Odiseo Jimenez 20 0 0
+P Alex Reeser 25 15 20
+P Matt Morales 50 20 20
 D Uber Rob 0 20 10
 D Uber Dylan 0 20 10
 D Driver Eric 0 20 15

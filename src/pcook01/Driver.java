@@ -2,11 +2,23 @@ package pcook01;
 
 import java.util.Scanner;
 
+/**
+ * Represents an Uber driver
+ * @author patrickcook
+ *
+ */
 public class Driver extends User {
 	private Scanner sc;
 	private String carTitle;
 	private boolean available;
 
+	/**
+	 * Default Constructor
+	 * @param firstName First name
+	 * @param lastName Last name
+	 * @param balance Initial balance
+	 * @param location Initial location
+	 */
 	public Driver(String firstName, String lastName, double balance,
 			Location location) {
 		super(firstName, lastName, balance, location);
@@ -14,14 +26,27 @@ public class Driver extends User {
 		this.available = true;
 	}
 	
+	/** 
+	 * Set if a driver is available for rides
+	 * @param avail Availability
+	 */
 	public void setAvailable(boolean avail) {
 		this.available = avail;
 	}
 	
+	/**
+	 * Check if driver is available
+	 * @return Driver availability
+	 */
 	public boolean isAvailable() {
 		return available;
 	}
 	
+	/**
+	 * User input version of confirming a ride
+	 * @param ride Ride to confirm
+	 * @return True if the user accepts ride
+	 */
 	public boolean userConfirmRide(Ride ride) {
 		char response;
 		
@@ -41,6 +66,10 @@ public class Driver extends User {
 		}
 	}
 	
+	/**
+	 * User version of collect a rating
+	 * @return Rating collected from user
+	 */
 	public int userCollectRating() {
 		int rating;
 		

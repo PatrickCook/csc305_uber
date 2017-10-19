@@ -1,6 +1,7 @@
 package pcook01;
 
 import java.io.FileWriter;
+
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,14 +9,29 @@ import java.util.concurrent.CountDownLatch;
 
 import org.json.simple.JSONObject;
 
+/**
+ * RideManager is used to keep track and update all objects involved 
+ * in an Uber ride. Once a ride is requested a RideManager is created
+ * for that ride and the Uber experience begins
+ * @author Patrick Cook
+ */
 public class RideManager {
 	private Ride ride;
 
+	/**
+	 * Default constructor for creating a RideManager
+	 * @param ride - ride that is specific to this manager
+	 */
 	public RideManager(Ride ride) {
 		this.ride = ride;
 	}
 
-
+	/**
+	 * The starting point for every Uber ride. Responsible for
+	 * simulating driver pickup, ride duration and ride completion
+	 * using timers. All user attributes are updated once the ride
+	 * has been completed
+	 */
 	public void startRide() {
 		Timer timer = new Timer();
 		Driver driver = ride.getDriver();
@@ -50,35 +66,36 @@ public class RideManager {
 				logRide();
 				
 				/* Update driver and user information */
-				UberMap.unsetLocation(user.getLocation());
-				UberMap.unsetLocation(driver.getLocation());
-				
 				driver.setAvailable(true);
 				driver.setLocation(ride.getDestination());
 				user.setLocation(ride.getDestination());
-				
-				UberMap.setLocation(user.getLocation(), 1);
-				UberMap.setLocation(driver.getLocation(), 2);
 				
 				latch.countDown();
 			}
 
 		}, ride.getEstimatedWaitTime() + ride.getEstimatedRideTime());
 		
+		/* Wait for timers to end */
 		try {
 			latch.await();
 		} catch (InterruptedException e) {
 			
 		}
-		timer.cancel();
 		
+		timer.cancel();
 	}
-
+	
+	/**
+	 * Used to collect user ratings. Currently rating collection
+	 * defaults to a randomized function. However userCollectRating()
+	 * can be swapped in to allow for user input
+	 */
 	public void collectRatings() {
 		int driverRating, passengerRating;
 		Driver driver = ride.getDriver();
 		Passenger passenger  = ride.getPassenger();
 
+		/* Swap with userCollectRating() for user input version */
 		passengerRating = driver.collectRating();
 		driverRating = passenger.collectRating();
 		
@@ -97,7 +114,11 @@ public class RideManager {
 				passenger.toString(), passenger.getRating(), passenger.getBalance());
 	}
 	
-	@SuppressWarnings("unchecked")
+	/**
+	 * Helper function used to log the ride. The ride information
+	 * is appended to the uber_logs.json file or the file is created
+	 * if it does not exist.
+	 */
 	public void logRide() {
 		
 		JSONObject log = new JSONObject();

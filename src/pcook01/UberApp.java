@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Testing suite for Uber
+ * Reads a text file and runs simulations of each ride
+ * @author Patrick Cook
+ *
+ */
 public class UberApp {
 	public static ArrayList<Passenger> passengers = new ArrayList<>();
 	
@@ -15,12 +21,15 @@ public class UberApp {
 		
 		for (Iterator<Passenger> i = passengers.iterator(); i.hasNext(); ) {
 			Passenger pass = (Passenger)i.next();
-			pass.requestRide(getRandLocation());
+			Uber.requestRide(pass, getRandLocation());
 		}
 		
-		//Uber.outputUberHistory();
+		Uber.outputUberHistory();
 	}
 	
+	/**
+	 * Responsible for reading input file and adding users
+	 */
 	public static void initializeUber() {
 	    String fileName = "src/pcook01/input.txt";
 	    String line = null;
@@ -30,19 +39,23 @@ public class UberApp {
 	        FileReader fileReader = new FileReader(fileName);
 	        BufferedReader bufferedReader = new BufferedReader(fileReader);
 
+	        /* Read each line of the text file */
 	        while((line = bufferedReader.readLine()) != null) {
 	            pieces = line.split(" ");
 	            
+	            /* Ensure enough info is provided */
 	            if (pieces.length != 6) {
 	            	continue;
 	            }
 	            
+	            /* Extract user information */
 	            String first = pieces[1];
             	String last = pieces[2];
             	double initialBal = Double.parseDouble(pieces[3]);
             	int xCord = Integer.parseInt(pieces[4]);
             	int yCord = Integer.parseInt(pieces[5]);
             	
+            	/* Create either a driver or passenger */
 	            if (pieces[0].equals("D")) 
 	            {
 	            	Uber.addUberDriver(new Driver(first, last, initialBal, new Location(xCord, yCord)));
@@ -59,8 +72,7 @@ public class UberApp {
 	            	System.out.println("Invalid user type provided.");
 	            }
 	        }   
-
-
+	        
 	        bufferedReader.close();    
 	        
 	    } catch(FileNotFoundException ex) {
@@ -70,6 +82,10 @@ public class UberApp {
 	    }
 	}
 	
+	/**
+	 * Helper function to return random location for requesting a ride
+	 * @return - Random location within the UberMap bounds
+	 */
 	public static Location getRandLocation() {
 		int xCord = (int) (Math.random() * UberMap.MAPSIZE_X);
 		int yCord = (int) (Math.random() * UberMap.MAPSIZE_Y);
