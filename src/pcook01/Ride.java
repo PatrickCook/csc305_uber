@@ -15,17 +15,17 @@ public class Ride {
 	
 	/**
 	 * Constructor for an Uber Ride
-	 * @param driver Uber ride driver
-	 * @param passenger Uber ride passenger
+	 * @param t1 Uber ride driver
+	 * @param t2 Uber ride passenger
 	 * @param dropoff Dropoff location for ride
 	 */
-	public Ride(Driver driver, Passenger passenger, Location dropoff) {
-		this.pickup = passenger.getLocation();
+	public Ride(Driver t1, Passenger t2, Location dropoff) {
+		this.pickup = t2.getLocation();
 		this.dropoff = dropoff;
-		this.driver = driver;
-		this.passenger = passenger;
-		this.driverDistance = UberMap.getDistance(driver.getLocation(), passenger.getLocation());
-		this.rideDistance = UberMap.getDistance(passenger.getLocation(), dropoff);
+		this.driver = t1;
+		this.passenger = t2;
+		this.driverDistance = UberMap.getDistance(t1.getLocation(), t2.getLocation());
+		this.rideDistance = UberMap.getDistance(t2.getLocation(), dropoff);
 	}
 
 	/**

@@ -23,7 +23,7 @@ public class Passenger extends User{
 	 * @param ride Ride to confirm
 	 * @return True if the user accepts ride
 	 */
-	public boolean userConfirmRide(Ride ride) {
+	public boolean userConfirmRide() {
 		char response;
 		sc = new Scanner(System.in);
 		

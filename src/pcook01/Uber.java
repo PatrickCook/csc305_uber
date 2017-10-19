@@ -121,10 +121,11 @@ public class Uber {
 	        		return 1;
 	        	/* If there is a tie, use ratings to choose */	
 	        	} else {
-	        		if (a.getDriver().getRating() < b.getDriver().getRating())
+	        		if (a.getDriver().getRating() > b.getDriver().getRating())
 		                return -1;
-		            else if (a.getDriver().getRating() > b.getDriver().getRating())
+		            else if (a.getDriver().getRating() < b.getDriver().getRating())
 		                return 1;
+	        		
 		            return 0;
 	        	}
 	        }
