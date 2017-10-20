@@ -1,4 +1,4 @@
-#Uber Assignment CSC 305
+# Uber Assignment CSC 305
 Author: Patrick Cook
 Date: 10/10/2017
 
@@ -7,7 +7,7 @@ Open project in Eclipse IDE
 The main driver for the program is UberApp.java
 
 
-#How can this be used for UberEats you ask?
+## How can this be used for UberEats you ask?
 I designed this Uber implementation with two main objectives in mind, high cohesiveness and low coupling. 
 Due to these design choices my Uber implementation is flexible and almost the entire project is reusable
 for UberEats. 
