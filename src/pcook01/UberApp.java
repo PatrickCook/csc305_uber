@@ -44,7 +44,7 @@ public class UberApp {
 	            pieces = line.split(" ");
 	            
 	            /* Ensure enough info is provided */
-	            if (pieces.length != 6) {
+	            if (pieces.length != 4) {
 	            	continue;
 	            }
 	            
@@ -52,18 +52,16 @@ public class UberApp {
 	            String first = pieces[1];
             	String last = pieces[2];
             	double initialBal = Double.parseDouble(pieces[3]);
-            	int xCord = Integer.parseInt(pieces[4]);
-            	int yCord = Integer.parseInt(pieces[5]);
             	
             	/* Create either a driver or passenger */
 	            if (pieces[0].equals("D")) 
 	            {
-	            	Uber.addUberDriver(new Driver(first, last, initialBal, new Location(xCord, yCord)));
+	            	Uber.addUberDriver(new Driver(first, last, initialBal, getRandLocation()));
 	            	
 	            } 
 	            else if (pieces[0].equals("P")) 
 	            {
-	            	Passenger newPas = new Passenger(first, last, initialBal, new Location(xCord, yCord));
+	            	Passenger newPas = new Passenger(first, last, initialBal, getRandLocation());
 	            	Uber.addUberUser(newPas);
 	            	passengers.add(newPas);
 	            } 

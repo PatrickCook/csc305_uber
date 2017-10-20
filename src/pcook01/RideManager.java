@@ -63,7 +63,6 @@ public class RideManager {
 				
 				PaymentSystem.processTransaction(transaction);
 				collectRatings();
-				logRide();
 				
 				/* Update driver and user information */
 				driver.setAvailable(true);
@@ -112,43 +111,5 @@ public class RideManager {
 
 		System.out.printf("%s: Rating - %.2f, Balance - %.2f\n",
 				passenger.toString(), passenger.getRating(), passenger.getBalance());
-	}
-	
-	/**
-	 * Helper function used to log the ride. The ride information
-	 * is appended to the uber_logs.json file or the file is created
-	 * if it does not exist.
-	 */
-	public void logRide() {
-		
-		JSONObject log = new JSONObject();
-		JSONObject user = new JSONObject();
-		JSONObject driver = new JSONObject();
-		JSONObject locs = new JSONObject();
-		
-		user.put("name", ride.getPassenger().toString());
-		user.put("balance", ride.getPassenger().getBalance());
-		
-		driver.put("name", ride.getDriver().toString());
-		driver.put("balance", ride.getDriver().getBalance());
-		
-		locs.put("start", ride.getPickup().toString());
-		locs.put("end", ride.getDestination().toString());		
-		
-		log.put("driver", driver);
-		log.put("user", user);
-		log.put("location", locs);
-		log.put("cost", ride.getCost());
-		
-		
-		/* write to log file */
-        try (FileWriter file = new FileWriter("uber_logs.json", true)) {
-
-            file.write(log.toString() + "\n");
-            file.flush();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 	}
 }

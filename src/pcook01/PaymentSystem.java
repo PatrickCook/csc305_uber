@@ -23,4 +23,12 @@ public class PaymentSystem {
 		
 		System.out.printf("%s paid %s $%.2f.\n", sender.toString(), recipient.toString(), transaction.getAmount());
 	}
+	
+	/**
+	 * Allow admin to set the ride rate
+	 * @param rate new rate to charge
+	 */
+	public static void setRideRate(double rate) {
+		RIDE_RATE = rate;
+	}
 }

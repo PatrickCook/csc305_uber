@@ -1,0 +1,49 @@
+--------------- Uber Information ---------------
+5 completed, 0 canceled, 5 transactions
+Passenger: Patrick Cook: 
+	Rating: 3.00
+	Location: (77, 99)
+Passenger: Casey Cook: 
+	Rating: 1.00
+	Location: (69, 61)
+Passenger: Taylor Gater: 
+	Rating: 4.00
+	Location: (45, 23)
+Passenger: Odiseo Jimenez: 
+	Rating: 1.00
+	Location: (26, 88)
+Passenger: Alex Reeser: 
+	Rating: 4.00
+	Location: (73, 9)
+Driver: Uber Rob: 
+	Rating: 1.00
+	Location: (73, 9)
+Driver: Uber Dylan: 
+	Rating: 3.00
+	Location: (69, 61)
+Driver: Uber Eric: 
+	Rating: 0.00
+	Location: (89, 67)
+Driver: Uber Ryan: 
+	Rating: 0.00
+	Location: (9, 82)
+Driver: Uber Jim: 
+	Rating: 4.00
+	Location: (77, 99)
+Driver: Uber Alice: 
+	Rating: 0.00
+	Location: (70, 96)
+Driver: Uber Megan: 
+	Rating: 5.00
+	Location: (45, 23)
+Driver: Uber Stephanie: 
+	Rating: 5.00
+	Location: (26, 88)
+Driver: Uber Sierra: 
+	Rating: 0.00
+	Location: (79, 35)
+Driver: Uber Ashley: 
+	Rating: 0.00
+	Location: (29, 13)
+
+------------------------------------------------

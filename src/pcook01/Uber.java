@@ -1,9 +1,13 @@
 package pcook01;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
+
+import org.json.simple.JSONObject;
 
 /**
  * Central class for Uber Application
@@ -26,7 +30,7 @@ public class Uber {
 	 * @param dropoff - dropoff location for ride
 	 */
 	public static void requestRide(Passenger passenger, Location dropoff) {
-		Ride newRide;
+		Ride newRide = null;
 		Driver driver;
 		RideManager rideManager;
 		PriorityQueue<Ride> available;
@@ -55,9 +59,8 @@ public class Uber {
 			newRide = new Ride(driver, passenger, dropoff);
 			
 			/* Check if they can pay for ride */
-			if (passenger.getBalance() < newRide.getCost()) {
+			if (!passenger.canAffordRide(newRide)) {
 				System.out.println("Insufficient funds to request ride.");
-				break;
 			}
 			
 			if (rideConfirmation(newRide, driver, passenger)) {
@@ -67,7 +70,7 @@ public class Uber {
 				rides.add(newRide);
 				rideManager = new RideManager(newRide);
 				rideManager.startRide();
-
+				logRide(newRide, true);
 				completed++;
 				
 				System.out.println("------------------------------------------------------\n");
@@ -75,6 +78,10 @@ public class Uber {
 			}
 		}
 		canceled++;
+		
+		if (newRide != null) {
+			logRide(newRide, false);
+		}
 		
 		System.out.println("RideManager: Ride request canceled.");
 		System.out.println("------------------------------------------------------\n");
@@ -146,23 +153,72 @@ public class Uber {
 	}
 	
 	/**
+	 * Helper function used to log the ride. The ride information
+	 * is appended to the uber_logs.json file or the file is created
+	 * if it does not exist.
+	 */
+	@SuppressWarnings("unchecked")
+	public static void logRide(Ride ride, boolean completed) {
+		
+		JSONObject log = new JSONObject();
+		JSONObject user = new JSONObject();
+		JSONObject driver = new JSONObject();
+		JSONObject locs = new JSONObject();
+		
+		user.put("name", ride.getPassenger().toString());
+		user.put("balance", ride.getPassenger().getBalance());
+		
+		driver.put("name", ride.getDriver().toString());
+		driver.put("balance", ride.getDriver().getBalance());
+		
+		locs.put("start", ride.getPickup().toString());
+		locs.put("end", ride.getDestination().toString());		
+		
+		log.put("driver", driver);
+		log.put("user", user);
+		log.put("location", locs);
+		log.put("cost", ride.getCost());
+		log.put("completed", completed);
+		
+		/* write to log file */
+        try (FileWriter file = new FileWriter("ride_logs.json", true)) {
+
+            file.write(log.toString() + "\n");
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
+	/**
 	 * Used to output all trip history for the current run
 	 */
 	public static void outputUberHistory() {
 		
-		System.out.println("--------------- Uber Information ---------------");
-		System.out.printf("%d completed, %d canceled, %d transactions\n", 
-				completed, canceled, completed);
+		/* write to log file */
+        try (FileWriter file = new FileWriter("uber_logs.txt")) {
+        	file.write("--------------- Uber Information ---------------\n");
+    		file.write(completed + " completed, " + canceled + " canceled, "
+    				+ completed + " transactions\n");
+    		
+    		/* Output passenger information */
+    		for (Passenger p : users) {
+    			file.write("Passenger: " + p.toStringFull() + "\n");
+    		}
+    		
+    		/* Output driver information */
+    		for (Driver d : drivers) {
+    			file.write("Driver: " + d.toStringFull() + "\n");
+    		}
+    		file.write("\n------------------------------------------------");
+            file.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
 		
-		/* Output passenger information */
-		for (Passenger p : users) {
-			System.out.println(p.toStringFull());
-		}
-		
-		/* Output driver information */
-		for (Driver d : drivers) {
-			System.out.println(d.toStringFull());
-		}
 	}
 	
 	/**

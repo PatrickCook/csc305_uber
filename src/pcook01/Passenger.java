@@ -61,4 +61,13 @@ public class Passenger extends User{
 			System.out.println("Please enter number between [1-5]: ");
 		}
 	}
+	
+	/**
+	 * Verifies whether user can afford a potential ride
+	 * @param ride
+	 * @return True if they can afford it, otherwise false.
+	 */
+	public boolean canAffordRide(Ride ride) {
+		return getBalance() >= ride.getCost();
+	}
 }
