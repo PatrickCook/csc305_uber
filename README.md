@@ -3,8 +3,8 @@ Author: Patrick Cook
 Date: 10/10/2017
 
 ## To Run:
-Open project in Eclipse IDE
-The main driver for the program is UberApp.java
+* Open project in Eclipse IDE
+* The main driver for the program is UberApp.java
 
 
 ## How can this be used for UberEats you ask?
@@ -13,10 +13,10 @@ Due to these design choices my Uber implementation is flexible and almost the en
 for UberEats. 
 
 UberEats would require the following additions:
-A Restaurant class
-A RestaurantMenu class
-A CustomerOrder class
-And possibly some smaller additional classes.
+* A Restaurant class
+* A RestaurantMenu class
+* A CustomerOrder class
+* And possibly some smaller additional classes.
 
 To convert my project into UberEats I would allow the user to select from a list or restaurants.
 They would be able to select items from the menu and place an order. This order would be attached
