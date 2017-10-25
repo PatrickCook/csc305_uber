@@ -6,6 +6,17 @@ Date: 10/10/2017
 * Open project in Eclipse IDE
 * The main driver for the program is UberApp.java
 
+## Input Files
+* Contained in the project is a file called 'input.txt'. This file allows the program to load a predefined scenario. 
+* The input file has the following format:
+  * Each line: D | P Firstname Lastname initialBalance
+  * D stands for driver, P for passenger
+
+## Output Files
+At the root of the project two files are created when the program is ran:
+* uber_log.txt - Keeps a log of all users of the system and reports their current information after the scenario has been ran
+* ride_logs.json - Keeps a log of all rides given. Each ride object in the JSON file holds the following information:
+  * cost, driver, passenger, dropoff location, whether the ride was successful
 
 ## How can this be used for UberEats you ask?
 I designed this Uber implementation with two main objectives in mind, high cohesiveness and low coupling. 
